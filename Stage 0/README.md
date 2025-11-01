@@ -1,4 +1,4 @@
-# Stage 0 Capstone Project
+### Stage 0 Capstone Project: Python Scripting and Article Writing
 This goal of this project is to enable interns:
 - Develop essential technical writing skills, focusing on clear and concise communication of complex scientific concepts. Interns will learn how to document research findings, write reports, and create educational content that is accessible to both scientific and general audiences.
 - Write a simple Python script for printing the names, slack username, country, 1 hobby, affiliations of people on your team and the DNA sequence of the genes they love most.
@@ -6,6 +6,7 @@ This goal of this project is to enable interns:
 The selected topic for the article (technical) writing: **What single-cell data is teaching us about cancer evolution**, with the focus of connecting scRNA-seq to tumour heterogeneity and therapy resistance.
 
 ### SECTION A: PYTHON SCRIPT
+
 ```py
 member_team_asparagine = {
     "Ayşenur Akcan": {
@@ -91,8 +92,9 @@ if __name__ == "__main__":
     team_member_favseq(member_team_asparagine)
 ```
 
-### SECTION B: ARTICLE WRITING
 
+
+### SECTION B: ARTICLE WRITING
 
 # What single-cell data is teaching us about cancer evolution: Connecting scRNA-seq to tumour heterogeneity and therapy resistance
 
