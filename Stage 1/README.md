@@ -130,7 +130,7 @@ plt.show()
 
 #### Resulting plot
 
-b
+b.
 
 <img width="787" height="587" alt="figure 1b" src="https://github.com/user-attachments/assets/28353c76-2f75-43a7-b36a-019cc5bd5fdd" />
 
@@ -139,7 +139,7 @@ b
 ## Part B. Breast Cancer Data Exploration
 c. Scatter Plot (radius vs texture)
 
-Thw plot `texture_mean` vs `radius_mean`: Colour points by `diagnosis` (M = malignant, B = benign).
+The scatter plot of `texture_mean` vs `radius_mean`: Colour points by `diagnosis` (M = malignant, B = benign).
 
 Dataset: https://raw.githubusercontent.com/HackBio-Internship/2025_project_collection/refs/heads/main/Python/Dataset/data-3.csv
 
@@ -178,6 +178,12 @@ plt.show()
 ```
 
 #### Resulting plot
+
+c.
+
+<img width="536" height="474" alt="figure 1c" src="https://github.com/user-attachments/assets/dd109aae-d33b-40d4-a5ae-856d0606faa1" />
+
+###### Figure 1c: scatter plot of texture_mean vs radius_mean
 
 d. Correlation Heatmap
 Compute the correlation matrix of six key features:
@@ -226,6 +232,12 @@ plt.show()
 
 #### Resulting plot
 
+d.
+
+<img width="648" height="590" alt="figure 1d" src="https://github.com/user-attachments/assets/43d1bf0e-646b-4a23-9107-75a17dee0797" />
+
+###### Figure 1d: Correlation heatmap of key features
+
 e. Scatter Plot (smoothness vs compactness)
 
 - Plot `compactness_mean` vs `smoothness_mean` coloured by `diagnosis`.
@@ -265,6 +277,12 @@ plt.show()                                  # Shows the plot
 ```
 
 #### Resulting plot
+
+e.
+
+<img width="590" height="490" alt="figure 1e_2" src="https://github.com/user-attachments/assets/a71d3b93-02c8-40fe-99f1-a34b0f80f52b" />
+
+###### Figure 1e. Scatter plot of compactness_mean vs smoothness_mean
 
 f. Density Plot (area distribution)
 
@@ -306,8 +324,88 @@ plt.show()              # Shows the plot
 
 #### Resulting plot
 
+f.
+
+<img width="789" height="390" alt="figure 1f" src="https://github.com/user-attachments/assets/c141a678-a97f-47b0-a0ee-079a8ee7583d" />
+
+###### Figure 1f: Density plot of area distribution
 
 ### Task 3: DNA to protein translation
+## Python function for translating DNA to protein
+
+```py
+# Starts at the first 'ATG' (start codon) and stops at the first stop codon, representing normal cellular process.
+
+def translate_dna_to_protein(dna_seq):
+    codon_table = {
+        'ATA':'I','ATC':'I','ATT':'I','ATG':'M',
+        'ACA':'T','ACC':'T','ACG':'T','ACT':'T',
+        'AAC':'N','AAT':'N','AAA':'K','AAG':'K',
+        'AGC':'S','AGT':'S','AGA':'R','AGG':'R',
+        'CTA':'L','CTC':'L','CTG':'L','CTT':'L',
+        'CCA':'P','CCC':'P','CCG':'P','CCT':'P',
+        'CAC':'H','CAT':'H','CAA':'Q','CAG':'Q',
+        'CGA':'R','CGC':'R','CGG':'R','CGT':'R',
+        'GTA':'V','GTC':'V','GTG':'V','GTT':'V',
+        'GCA':'A','GCC':'A','GCG':'A','GCT':'A',
+        'GAC':'D','GAT':'D','GAA':'E','GAG':'E',
+        'GGA':'G','GGC':'G','GGG':'G','GGT':'G',
+        'TCA':'S','TCC':'S','TCG':'S','TCT':'S',
+        'TTC':'F','TTT':'F','TTA':'L','TTG':'L',
+        'TAC':'Y','TAT':'Y','TAA':'*','TAG':'*',
+        'TGC':'C','TGT':'C','TGA':'*','TGG':'W'
+    }
+    # Stop codons (TAA, TAG, TGA) are represented by "*".
+    # Invalid or incomplete codons are translated as "X" to indicate an unknown amino acid.
+
+    # Ensure uppercase and remove any space in the sequence string
+    dna_seq = dna_seq.upper().replace(" ", "")
+
+    # Find the first start codon (ATG)
+    start_index = dna_seq.find("ATG")
+    if start_index == -1:
+        return "No start codon found."
+
+    protein = ""
+
+    # Translate starting from the first ATG.
+    for i in range(start_index, len(dna_seq) - 2, 3):
+        codon = dna_seq[i:i+3]
+        amino_acid = codon_table.get(codon, 'X')
+        if amino_acid == '*':  # stop codon
+            break
+        protein += amino_acid
+
+    return protein
+
+
+# DNA sequence (from the human AKT1 gene)
+dna_sequence = (
+    "ATGAGCGACGTGGCTATTGTGAAGGAGGGTTGGCTGGGCCCGAGTGGAAGGACAAGGGGCTGGAGGAGGAG"
+    "CAGCAGGAGGCCATGCTTGGGGAAGGAGGAGGAGGAGGGCTGGAGCAGGAGGAGGAAGAGGCTGGAGGAAGGAG"
+)
+
+protein = translate_dna_to_protein(dna_sequence)
+print(protein)
+```
+
+**Result**: `MSDVAIVKEGWLGPSGRTRGWRRSSRRPCLGKEEEEGWSRRRKRLEEG`
+
+A quick `BLAST` of `MSDVAIVKEGWLGPSGRTRGWRRSSRRPCLGKEEEEGWSRRRKRLEEG` in `UniProtKB` identified the protein sequence as `non-specific serine/threonine protein kinase` (AKT1 gene)
 
 ### Task 4: Calculation of hamming distance
+## Python function for calculating the hamming distance between slack username and twitter/X handle.
 
+Hamming distance = number of differing positions
+```py
+def hamming_distance(handle1, handle2):                       # Defines the function
+    distance = sum(a != b for a, b in zip(handle1, handle2))  # Compares characters in overlapping range
+    return distance
+
+slack = "Sunday"
+twitter = "SundOD" # Synthesised! My real Twitter (X) handle is OniD_Sunday.
+
+print("Hamming distance:", hamming_distance(slack, twitter))
+```
+
+**Result**: 2
