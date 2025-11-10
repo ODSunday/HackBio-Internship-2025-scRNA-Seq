@@ -403,7 +403,7 @@ def hamming_distance(handle1, handle2):                       # Defines the func
     return distance
 
 slack = "Sunday"
-twitter = "SundOD" # Synthesised! My real Twitter (X) handle is OniD_Sunday.
+twitter = "SundOD"                                            # Synthesised Twitter handle.
 
 print("Hamming distance:", hamming_distance(slack, twitter))
 ```
