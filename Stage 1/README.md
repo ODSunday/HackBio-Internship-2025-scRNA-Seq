@@ -10,3 +10,9 @@ Importantly, single-cell approaches now integrate with flow cytometry, CyTOF, im
 
 **Keywords**: Single-cell genomics, immune diversity, immunology, therapeutic innovation, and biomarker.
 
+### Task 2: Plotting
+
+### Task 3: DNA to protein translation
+
+### Task 4: Calculation of hamming distance
+
