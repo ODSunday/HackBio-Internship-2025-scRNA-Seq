@@ -8,7 +8,7 @@ Key challenges are limiting the full potential of single-cell genomics in immuno
 
 Importantly, single-cell approaches now integrate with flow cytometry, CyTOF, imaging, lineage tracing, spatial transcriptomics, and CRISPR-based perturbation assays. These multimodal strategies reconnect transcriptional profiles with protein expression, spatial location, and clonal history, promising to restore contextual understanding while overcoming limitations of dissociated single-cell RNA-sequencing. Collectively, these advances reveal the full diversity, organisation, and functional states of the immune system across health and disease. Hence, single-cell genomics is an indispensable tool for decoding immune diversity, playing a major role in biomarker discovery and therapeutic innovation. 
 
-**Keywords**: Single-cell genomics, immune diversity, immunology, therapeutic innovation, and biomarker.
+**Keywords**: Single-cell genomics, immune diversity, immunology, therapeutic innovation, biomarker.
 
 ### Task 2: Plotting
 ## Part A. Gene Expression (Heatmap & Volcano Plot)
@@ -36,7 +36,7 @@ print(df.head())
 sns.set(style="white", font_scale=0.9)
 g = sns.clustermap(
     df,
-    cmap="Blues",        # colour gradient
+    cmap="Blues",        # Colour gradient
     linewidths=0.7,
     linecolor='black',
     figsize=(4, 4),
@@ -101,7 +101,7 @@ palette = {
     "Not significant": "grey"
 }
 
-# Create the Volcano Plot
+# Create the volcano plot
 plt.figure(figsize=(8, 6))
 sns.scatterplot(
     data=df,
@@ -396,7 +396,7 @@ print(protein)
 A quick `BLAST` of `MSDVAIVKEGWLGPSGRTRGWRRSSRRPCLGKEEEEGWSRRRKRLEEG` in `UniProtKB` identified the protein sequence as `non-specific serine/threonine protein kinase` (AKT1 gene)
 
 ### Task 4: Calculation of hamming distance
-## Python function for calculating the hamming distance between slack username and twitter/X handle.
+## Python function for calculating the hamming distance between slack username and twitter/X handle
 
 Hamming distance = number of differing positions
 ```py
