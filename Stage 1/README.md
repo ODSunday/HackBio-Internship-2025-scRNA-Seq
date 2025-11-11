@@ -14,7 +14,7 @@ Importantly, single-cell approaches now integrate with flow cytometry, CyTOF, im
 ## Part A. Gene Expression (Heatmap & Volcano Plot)
 a. Normalized counts for HBR vs UHR samples
 
-The normalized gene expression dataset was used to plot a clustered heatmap of the top differentially expressed genes (DEGs) between HBR and UHR samples.
+Using the normalized gene expression dataset to plot a clustered heatmap of the top differentially expressed genes (DEGs) between HBR and UHR samples.
 - Labels: genes and samples.
 - Colour gradient (Blues) indicates expression levels.
   
@@ -56,6 +56,7 @@ a.
 ###### Figure 1a: Heatmap of the top DEGs between HBR and UHR samples
 
 b. Differential expression results (chromosome 22)
+
 The plot of log2FoldChange vs log10(Padj) from the DEG results.
 - Colour points by significance:
   - Upregulated: `green`
@@ -186,6 +187,7 @@ c.
 ###### Figure 1c: scatter plot of texture_mean vs radius_mean
 
 d. Correlation Heatmap
+
 Compute the correlation matrix of six key features:
 
 - `radius_mean`, `texture_mean`, `perimeter_mean`, `area_mean`, `smoothness_mean`, `compactness_mean`.
@@ -408,4 +410,4 @@ twitter = "SundOD"                                            # Synthesised Twit
 print("Hamming distance:", hamming_distance(slack, twitter))
 ```
 
-**Result**: 2
+**Result**: Hamming distance: 2
