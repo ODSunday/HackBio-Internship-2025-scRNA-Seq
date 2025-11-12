@@ -129,18 +129,6 @@ plt.legend(title='diagnosis', loc='upper right')
 plt.show()
 
 #d. Correlation Heatmap
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-# Import dataset
-data_source = "https://raw.githubusercontent.com/HackBio-Internship/2025_project_collection/refs/heads/main/Python/Dataset/data-3.csv"
-df = pd.read_csv(data_source, index_col=0)
-
-# Inspect the data
-print(df.shape)
-print(df.head())
-print(df.tail())
 
 # Select the six key features
 key_features = ['radius_mean', 'texture_mean', 'perimeter_mean', 'area_mean', 'smoothness_mean', 'compactness_mean']
@@ -166,19 +154,6 @@ plt.show()
 
 ## e. Scatter Plot (smoothness vs compactness)
 
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-# Import dataset
-data_source = "https://raw.githubusercontent.com/HackBio-Internship/2025_project_collection/refs/heads/main/Python/Dataset/data-3.csv"
-df = pd.read_csv(data_source, index_col=0)
-
-# Inspect the data
-print(df.shape)
-print(df.head())
-print(df.tail()
-
 # Create the scatter plot
 plt.figure(figsize=(6, 5))
 palette = {'M': 'blue', 'B': 'orange'}      # Defines colour palette
@@ -197,19 +172,6 @@ plt.tight_layout()                          # Adjusts layout to accommodate the 
 plt.show()                                  # Shows the plot
 
 ## f. Density Plot (area distribution)
-
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-# Import dataset
-data_source = "https://raw.githubusercontent.com/HackBio-Internship/2025_project_collection/refs/heads/main/Python/Dataset/data-3.csv"
-df = pd.read_csv(data_source, index_col=0)
-
-# Inspect the data
-print(df.shape)
-print(df.head())
-print(df.tail()
 
 # Create the density plot using Seaborn
 plt.figure(figsize=(8, 4))
