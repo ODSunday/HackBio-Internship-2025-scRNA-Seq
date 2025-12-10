@@ -5,7 +5,7 @@ The project aims at reproducing a **complete single-cell RNA-sequencing (scRNA-s
 1. Installation of packages
 2. Loading and preprocessing of data  
 3. Quality control (QC)  
-4. Normalization and feature selection  
+4. Normalisation and feature selection  
 5. Dimensionality reduction (PCA, UMAP)  
 6. Clustering  
 7. Cell type annotation and visualisations
@@ -167,13 +167,13 @@ There was no need for the filtering step based on the QC outcomes.
 sc.pp.scrublet(bone_marrow_adata)
 ```
 
-## Normalization
-Since normalization adjusts for sequencing depth differences between cells, counts in the dataset were scaled so that each cell can the same total expression level.
+## Normalisation
+Since normalisation adjusts for sequencing depth differences between cells, counts in the dataset were scaled so that each cell can the same total expression level.
 ```py
 # First, save a copy of the data as follows:
 bone_marrow_adata.layers["counts"] = bone_marrow_adata.X.copy()
 
-# Normalizing to median total counts
+# Normalising to median total counts
 sc.pp.normalize_total(bone_marrow_adata)
 
 # Logarithmize the data
@@ -500,8 +500,8 @@ The identified cell-type proportions are most consistent with an active infectio
 
 The results show that neutrophils have the largest relative abundance (over 90% fraction of cells in a group) and the highest mean or median expression in group, compared to other identified cell types. Such outcome is contrary to what one would expect for a healthy resting peripheral blood profile. An increased neutrophil fraction is therefore strong evidence for an ongoing innate inflammatory response, particularly in an acute bacterial infection, where neutrophilia (increase in the frequency and number of neutrophils) is the dominant signal.
 
-Furthermore, the number of monocytes also seems to be elevated relative to a healthy baseline. Monocytosis (increase in the number of circulating monocytes) commonly accompanies acute infection and inflammation, and can reflect mobilisation of inflammatory monocyte subsets that move to tissues and differentiate to macrophages or dendritic cells (DCs). Hence, neutrophilia and monocytosis strengthens the interpretation of an active inflammatory or infectious process rather than an isolated lymphoid perturbation.
+Furthermore, the number of monocytes also seems to be elevated relative to a healthy baseline. Monocytosis (increase in the number of circulating monocytes) commonly accompanies acute infection and inflammation, and can reflect mobilisation of inflammatory monocyte subsets that move to tissues and differentiate to macrophages or dendritic cells (DCs). Hence, neutrophilia and monocytosis strengthen the interpretation of an active inflammatory or infectious process rather than an isolated lymphoid perturbation.
 
 Moreover, the results show a non-trivial NK cell activation states, suggesting a non-antiviral response. Numerically increased NK cells with transcriptional evidence of activation, such as cytotoxic or IFN-γ signatures, would indicate innate antiviral or early anti-infectious activity.
 
-Finally, despite a mix of adaptive immunity (indicated by the presence of lymphoid cells), innate myeloid cells dominated the immune response. Such phenomenon is commonly seen in acute severe infection and systemic inflammation where innate cells expand and lymphocytes marginate, deplete or are redistributed into tissues.
+Finally, despite a mix of adaptive immunity (indicated by the presence of lymphoid cells), innate myeloid cells dominated the immune response. Such phenomenon is commonly seen in acute severe infection and systemic inflammation where innate cells expand and lymphocytes are depleted or redistributed into tissues.
