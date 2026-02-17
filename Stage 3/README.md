@@ -1,6 +1,6 @@
 # Trajectory analysis of SARS-Cov-2 infection dynamics
 
-Ravindra et al. 2021 performed single-cell longitudinal analysis of SARS-CoV-2 infection in human airway epithelium to identify target cells, alterations in gene expression, and cell state changes (article: `https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3001143`), with the data deposited at: `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE166766`.
+Ravindra et al., 2021 performed single-cell longitudinal analysis of SARS-CoV-2 infection in human airway epithelium to identify target cells, alterations in gene expression, and cell state changes (article: `https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3001143`), with the data deposited at: `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE166766`.
 
 The task here is to reproduce the neighbourhood clustering and cell type identification in the referenced paper above (Figures 3A, 3B, 4A, 4B), and also perform pseudotime analysis to order the differentiation of cells. The steps covered in this project include the following:
 
@@ -36,14 +36,14 @@ import numpy as np
 ```
 
 The raw data (GSE166766_RAW.tar) was downloaded (from `https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE166766`) to the local device and uploaded into a Google Drive which was mounted as follows:
-```
+```py
 # Mounting Google Drive to assess downloaded datasets
 from google.colab import drive
 drive.mount('/content/drive')
 ```
 
 Thereafter, the raw data was untarred and re-organised into separate folders according to each disease condition (mock, 1dpi, 2dpi, and 3dpi). This was necessary to be able to treat each disease condition separately to adequately answer the biological questions afterwards.
-```
+```py
 # Untar (extract) the raw data
 
 !tar -xvf "/content/drive/MyDrive/Trajectory/GSE166766_RAW.tar" -C "/content/drive/MyDrive/Trajectory/"
@@ -123,13 +123,14 @@ day1_adata = sc.read_10x_mtx("/content/drive/MyDrive/Trajectory/1dpi")
 day2_adata = sc.read_10x_mtx("/content/drive/MyDrive/Trajectory/2dpi")
 day3_adata = sc.read_10x_mtx("/content/drive/MyDrive/Trajectory/3dpi")
 ```
-```
+```py
 # Annotate condition metadata
 mock_adata.obs["condition"] = "mock"
 day1_adata.obs["condition"] = "1dpi"
 day2_adata.obs["condition"] = "2dpi"
 day3_adata.obs["condition"] = "3dpi"
-
+```
+```py
 # Check datasets
 print(mock_adata)
 print(day1_adata)
@@ -145,7 +146,8 @@ mock_adata.var.head()
 day1_adata.var.head()
 day2_adata.var.head()
 day3_adata.var.head()
-
+```
+```py
 # Make unique
 mock_adata.var_names_make_unique()
 day1_adata.var_names_make_unique()
