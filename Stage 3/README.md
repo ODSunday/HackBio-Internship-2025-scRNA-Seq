@@ -93,7 +93,6 @@ for cond, gsm in conditions.items():            # Loops over conditions.
             shutil.move(src, dst)
 
 # Import and read datasets separately
-
 mock_adata = sc.read_10x_mtx(
     os.path.join(base_dir, "mock"),
     var_names="gene_symbols",
