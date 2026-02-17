@@ -556,3 +556,6 @@ sc.pl.tracksplot(bone_marrow_adata, marker_genes_dict, groupby="leiden_res0_5", 
 
 ### Q5. Which cell cluster has the highest abundance of ACE2 expression after 3 dpi and what does that mean biologically (INTERPRET VISUALLY)?
 
+## REFERENCES
+Ravindra, N.G., Alfajaro, m.M., Gasque, V., Huston, N.C., Wan, H., Szigeti-Buck, K., Yasumoto, Y., Greaney, A.M., Habet, V., Chow, R.D., Chen, J.S., Wei, J., Filler, R.B., Wang, B., Wang, G., Niklason, L.E., Montgomery, R.R., Eisenbarth, S.C., Chen, S., Williams, A., Iwasaki, A., Horvath, T.L., Foxman, E.F., Pierce, R.W., Pyle, A.M., van Dijk, D., Wilen, C.B. (2021). Single-cell longitudinal analysis of SARS-CoV-2 infection in human airway epithelium identifies target cells, alterations in gene expression, and cell state changes. _PLoS Biol_ 19(3): e3001143. https://doi.org/10.1371/journal.pbio.3001143.
+
