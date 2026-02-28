@@ -569,6 +569,8 @@ sc.pl.umap(
     title='3dpi'
 )
 
+# ACE2 and ENO2
+
 # mock
 sc.pl.umap(
     mock_adata,
@@ -600,6 +602,8 @@ sc.pl.umap(
     size=8,
     title='3dpi'
 )
+
+# TMPRSS4
 
 # mock
 sc.pl.umap(
