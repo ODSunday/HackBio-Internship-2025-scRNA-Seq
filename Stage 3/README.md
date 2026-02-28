@@ -358,9 +358,6 @@ sc.pl.violin(
     multi_panel=False,
 )
 
-
-
-
 # Visualise each of them in scatter plots.
 sc.pl.scatter(mock_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_MT')
 sc.pl.scatter(day1_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_MT')
@@ -393,40 +390,82 @@ sc.pp.scrublet(day3_adata)
 ## Normalisation
 Since normalisation adjusts for sequencing depth differences between cells, counts in the dataset were scaled so that each cell can the same total expression level.
 ```py
-# First, save a copy of the data as follows:
-bone_marrow_adata.layers["counts"] = bone_marrow_adata.X.copy()
+# mock
+mock_adata.layers["counts"] = mock_adata.X.copy()   # Saves a copy of the data
+sc.pp.normalize_total(mock_adata)                   # Normalises to median total counts
+sc.pp.log1p(mock_adata)                             # Logarithmizes the data
 
-# Normalising to median total counts
-sc.pp.normalize_total(bone_marrow_adata)
+# 1dpi
+day1_adata.layers["counts"] = day1_adata.X.copy()
+sc.pp.normalize_total(day1_adata)
+sc.pp.log1p(day1_adata)
 
-# Logarithmize the data
-sc.pp.log1p(bone_marrow_adata)
+# 2dpi
+day2_adata.layers["counts"] = day2_adata.X.copy()
+sc.pp.normalize_total(day2_adata)
+sc.pp.log1p(day2_adata)
+
+# 3dpi
+day3_adata.layers["counts"] = day3_adata.X.copy()
+sc.pp.normalize_total(day3_adata)
+sc.pp.log1p(day3_adata)
 ```
 
 ## Feature selection
 ```py
 # Selecting the top 1000 most variable genes
-sc.pp.highly_variable_genes(bone_marrow_adata, n_top_genes=1000)
+# mock
+sc.pp.highly_variable_genes(mock_adata, n_top_genes=1000)
+sc.pl.highly_variable_genes(mock_adata)
 
-sc.pl.highly_variable_genes(bone_marrow_adata )        # Left is normalized; right is not.
+# 1dpi
+sc.pp.highly_variable_genes(day1_adata, n_top_genes=1000)
+sc.pl.highly_variable_genes(day1_adata)
+
+# 2dpi
+sc.pp.highly_variable_genes(day2_adata, n_top_genes=1000)
+sc.pl.highly_variable_genes(day2_adata)
+
+# 3dpi
+sc.pp.highly_variable_genes(day3_adata, n_top_genes=1000)
+sc.pl.highly_variable_genes(day3_adata)
 ```
 
 ## Dimensionality Reduction (PCA)
 **Principal Component Analysis (PCA)** was used to reduce the data complexity and highlight key variation patterns for faster and more robust downstream steps like clustering and visualisation.
 
 ```py
-sc.tl.pca(bone_marrow_adata)
-sc.pl.pca_variance_ratio(bone_marrow_adata, n_pcs=10, log=False)
+# mock
+sc.tl.pca(mock_adata)
+sc.pl.pca_variance_ratio(mock_adata, n_pcs=10, log=False)
 
-sc.pl.pca(
-    bone_marrow_adata,
-    color=["n_genes_by_counts"]
-)
+sc.pl.pca(mock_adata,
+          color=["condition"],
+          cmap="coolwarm")
 
-sc.pl.pca(
-    bone_marrow_adata,
-    color=["total_counts"]
-)
+# 1dpi
+sc.tl.pca(day1_adata)
+sc.pl.pca_variance_ratio(day1_adata, n_pcs=10, log=False)
+
+sc.pl.pca(day1_adata,
+          color=["condition"],
+          cmap="coolwarm")
+
+# 2dpi
+sc.tl.pca(day2_adata)
+sc.pl.pca_variance_ratio(day2_adata, n_pcs=10, log=False)
+
+sc.pl.pca(day2_adata,
+          color=["condition"],
+          cmap="coolwarm")
+
+# 3dpi
+sc.tl.pca(day3_adata)
+sc.pl.pca_variance_ratio(day3_adata, n_pcs=10, log=False)
+
+sc.pl.pca(day3_adata,
+          color=["condition"],
+          cmap="coolwarm")
 ```
 
 ### Nearest Neighbour
