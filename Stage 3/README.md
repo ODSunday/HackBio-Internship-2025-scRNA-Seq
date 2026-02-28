@@ -155,17 +155,9 @@ day3_adata.var_names_make_unique()
 ```
 
 ## Quality Control (QC)
-Ideally, QC ensures we only keep high-quality cells and informative genes, and typical filters remove:
-- Harmonize unique gene names (avoid gene duplications from old pipelines)
-- Cells with too few genes (likely dead)
-- Cells with too many genes (possible doublets)
-- Genes expressed in very few cells (uninformative)
+The datasets were good quality data from the original authors of the article. However, quality control analysis was performed separately for each disease condition, to confirm the quality of the datasets and to adhere to the usual scRNA-seq analysis pipeline.
 
 ```py
-# Following a useful step for older datasets, just in case of necessity.
-bone_marrow_adata.var_names_make_unique()
-bone_marrow_adata.obs_names_make_unique()
-
 # Checking for possible contamination from dying cells, ribosomal transcripts or haemoglobin
 
 # As a rule of thumb:
@@ -173,99 +165,229 @@ bone_marrow_adata.obs_names_make_unique()
 # Ribosomal transcripts are removed because they represent global transcriptional activity, not cell-type-specific biology.
 # Instead of true cell populations, high HB signal often represents ambient RNA contamination from lysed red blood cells.
 
-bone_marrow_adata.var['MT'] = bone_marrow_adata.var_names.str.startswith("MT-")
-bone_marrow_adata.var['RIBO'] = bone_marrow_adata.var_names.str.startswith("RPS", "RPL")
-bone_marrow_adata.var['HB'] = bone_marrow_adata.var_names.str.startswith("^HB[^(P)]")
+# mock
+mock_adata.var['MT'] = mock_adata.var_names.str.startswith("MT-")
+mock_adata.var['RIBO'] = mock_adata.var_names.str.startswith("RPS", "RPL")
+mock_adata.var['HB'] = mock_adata.var_names.str.startswith("^HB[^(P)]")
 
-# Now a quick check.
-mt_genes = bone_marrow_adata.var[bone_marrow_adata.var['MT']]
+# 1dpi
+day1_adata.var['MT'] = day1_adata.var_names.str.startswith("MT-")
+day1_adata.var['RIBO'] = day1_adata.var_names.str.startswith("RPS", "RPL")
+day1_adata.var['HB'] = day1_adata.var_names.str.startswith("^HB[^(P)]")
+
+# 2dpi
+day2_adata.var['MT'] = day2_adata.var_names.str.startswith("MT-")
+day2_adata.var['RIBO'] = day2_adata.var_names.str.startswith("RPS", "RPL")
+day2_adata.var['HB'] = day2_adata.var_names.str.startswith("^HB[^(P)]")
+
+# 3dpi
+day3_adata.var['MT'] = day3_adata.var_names.str.startswith("MT-")
+day3_adata.var['RIBO'] = day3_adata.var_names.str.startswith("RPS", "RPL")
+day3_adata.var['HB'] = day3_adata.var_names.str.startswith("^HB[^(P)]")
+
+# Calculating the QC metrics
+
+# mock
+sc.pp.calculate_qc_metrics(
+    mock_adata, qc_vars=["MT", 'RIBO', 'HB'], inplace=True, log1p=True
+)
+
+# 1dpi
+sc.pp.calculate_qc_metrics(
+    day1_adata, qc_vars=["MT", 'RIBO', 'HB'], inplace=True, log1p=True
+)
+
+# 2dpi
+sc.pp.calculate_qc_metrics(
+    day2_adata, qc_vars=["MT", 'RIBO', 'HB'], inplace=True, log1p=True
+)
+
+# 3dpi
+sc.pp.calculate_qc_metrics(
+    day3_adata, qc_vars=["MT", 'RIBO', 'HB'], inplace=True, log1p=True
+)
+```
+
+Standardising matplotlib for all plots
+```py
+import matplotlib.pyplot as plt
+
+plt.rcParams["figure.figsize"] = (5,4)  # Adjust figure size
+plt.rcParams["axes.grid"] = True  # Add grid to plots
+plt.rcParams["axes.edgecolor"] = "black" # Set plot border color
+plt.rcParams["axes.linewidth"] = 1.5 # Set plot border width
+plt.rcParams["axes.facecolor"] = "white" # Set background color
+plt.rcParams["axes.labelcolor"] = "black" # Set label color
+plt.rcParams["xtick.color"] = "black" # Set x-axis tick color
+plt.rcParams["ytick.color"] = "black" # Set y-axis tick color
+plt.rcParams["text.color"] = "black" # Set text color
+```
+
+Checking for mitochondrial, ribosomal, and haemoglobin genes
+
+```py
+# Mock
+mt_genes = mock_adata.var[mock_adata.var['MT']]
 mt_genes
 
-ribo_genes = bone_marrow_adata.var[bone_marrow_adata.var['RIBO']]
+ribo_genes = mock_adata.var[mock_adata.var['RIBO']]
 ribo_genes
 
-hb_genes = bone_marrow_adata.var[bone_marrow_adata.var['HB']]
+hb_genes = mock_adata.var[mock_adata.var['HB']]
+hb_genes
+
+# 1dpi
+mt_genes = day1_adata.var[day1_adata.var['MT']]
+mt_genes
+
+ribo_genes = day1_adata.var[day1_adata.var['RIBO']]
+ribo_genes
+
+hb_genes = day1_adata.var[day1_adata.var['HB']]
+hb_genes
+
+# 2dpi
+mt_genes = day2_adata.var[day2_adata.var['MT']]
+mt_genes
+
+ribo_genes = day2_adata.var[day2_adata.var['RIBO']]
+ribo_genes
+
+hb_genes = day2_adata.var[day2_adata.var['HB']]
+hb_genes
+
+# 3dpi
+mt_genes = day3_adata.var[day3_adata.var['MT']]
+mt_genes
+
+ribo_genes = day3_adata.var[day3_adata.var['RIBO']]
+ribo_genes
+
+hb_genes = day3_adata.var[day3_adata.var['HB']]
 hb_genes
 ```
-The quick check above showed there were no mitochondrial, ribosomal, or haemoglobin genes. Few more QC steps to ascertain this outcome:
+
+There are no mitochondrial, ribosomal, and haemoglobin genes. Verify with plots as follows:
+
 ```py
-# calculate the qc metrics
-
-sc.pp.calculate_qc_metrics(
-    bone_marrow_adata, qc_vars=["MT", 'RIBO', 'HB'], inplace=True, log1p=True
-)
-
-# Note that it is also included in the headers of obs
-bone_marrow_adata.obs.head()
-
-# And the gene list
-bone_marrow_adata.var.head()
-
-# Average number of genes that have at least one detected identifier in each cell i.e., the number of genes expressed in each cell:
+# Mock
 sc.pl.violin(
-    bone_marrow_adata,
-    ["n_genes_by_counts"],
+    mock_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_MT'],
     jitter=0.4,
     multi_panel=False,
 )
 
-# And the total number of molecules (UMI) detected in a cell:
 sc.pl.violin(
-    bone_marrow_adata,
-    ["total_counts"],
+    mock_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_RIBO'],
     jitter=0.4,
     multi_panel=False,
 )
 
-# Are any mitochondrial genes present?
 sc.pl.violin(
-    bone_marrow_adata,
-    ["pct_counts_MT"],
+    mock_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_HB'],
     jitter=0.4,
     multi_panel=False,
 )
 
-# What about the ribosomal genes?
+# 1dpi
 sc.pl.violin(
-    bone_marrow_adata,
-    ["pct_counts_RIBO"],
+    day1_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_MT'],
     jitter=0.4,
     multi_panel=False,
 )
 
-# And the haemoglobin genes?
 sc.pl.violin(
-    bone_marrow_adata,
-    ["pct_counts_HB"],
+    day1_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_RIBO'],
     jitter=0.4,
     multi_panel=False,
 )
+
+sc.pl.violin(
+    day1_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_HB'],
+    jitter=0.4,
+    multi_panel=False,
+)
+
+# 2dpi
+sc.pl.violin(
+    day2_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_MT'],
+    jitter=0.4,
+    multi_panel=False,
+)
+
+sc.pl.violin(
+    day2_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_RIBO'],
+    jitter=0.4,
+    multi_panel=False,
+)
+
+sc.pl.violin(
+    day2_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_HB'],
+    jitter=0.4,
+    multi_panel=False,
+)
+
+# 3dpi
+sc.pl.violin(
+    day3_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_MT'],
+    jitter=0.4,
+    multi_panel=False,
+)
+
+sc.pl.violin(
+    day3_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_RIBO'],
+    jitter=0.4,
+    multi_panel=False,
+)
+
+sc.pl.violin(
+    day3_adata,
+    ["n_genes_by_counts", 'total_counts', 'pct_counts_HB'],
+    jitter=0.4,
+    multi_panel=False,
+)
+
+
+
 
 # Visualise each of them in scatter plots.
-sc.pl.scatter(bone_marrow_adata, "total_counts", "n_genes_by_counts", color="pct_counts_MT")
-sc.pl.scatter(bone_marrow_adata, "total_counts", "n_genes_by_counts", color="pct_counts_RIBO")
-sc.pl.scatter(bone_marrow_adata, "total_counts", "n_genes_by_counts", color="pct_counts_HB")
+sc.pl.scatter(mock_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_MT')
+sc.pl.scatter(day1_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_MT')
+sc.pl.scatter(day2_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_MT')
+sc.pl.scatter(day3_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_MT')
+
+sc.pl.scatter(mock_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_RIBO')
+sc.pl.scatter(day1_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_RIBO')
+sc.pl.scatter(day2_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_RIBO')
+sc.pl.scatter(day3_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_RIBO')
+
+sc.pl.scatter(mock_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_HB')
+sc.pl.scatter(day1_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_HB')
+sc.pl.scatter(day2_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_HB')
+sc.pl.scatter(day3_adata, 'total_counts', 'n_genes_by_counts', color='pct_counts_HB')
 ```
 All the steps above confirmed there no MT, RIBO, and HB genes in the dataset.
-```py
-sc.pp.calculate_qc_metrics(bone_marrow_adata, inplace=True, log1p=True)
 
-# Reconfirming the dataset
-bone_marrow_adata.obs.head()
-bone_marrow_adata.var.head()
-
-# Playing around the dataset with violin plots and scatterplots
-sc.pl.violin(bone_marrow_adata, ['n_genes_by_counts', 'total_counts'], jitter=0.4)
-sc.pl.violin(bone_marrow_adata, ['n_genes_by_counts'], jitter=0.4)
-sc.pl.violin(bone_marrow_adata, ['total_counts'], jitter=0.4)
-sc.pl.scatter(bone_marrow_adata, x='total_counts', y='n_genes_by_counts', color='n_genes_by_counts')
-sc.pl.scatter(bone_marrow_adata, x='total_counts', y='n_genes_by_counts', color='total_counts')
-```
-There was no need for the filtering step based on the QC outcomes.
+### Filtering
+No necessary for this dataset, since there were no obvious mitochondrial, ribosomal, and haemoglobin genes.
 
 ### Doublet detection
 ```py
-sc.pp.scrublet(bone_marrow_adata)
+sc.pp.scrublet(mock_adata)
+sc.pp.scrublet(day1_adata)
+sc.pp.scrublet(day2_adata)
+sc.pp.scrublet(day3_adata)
 ```
 
 ## Normalisation
