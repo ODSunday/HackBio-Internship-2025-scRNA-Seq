@@ -467,6 +467,60 @@ sc.pl.pca(day3_adata,
           color=["condition"],
           cmap="coolwarm")
 ```
+## UMAP
+```py
+# mock
+sc.pp.neighbors(mock_adata)
+sc.tl.umap(mock_adata)
+mock_adata                       # Views data info.
+
+# 1dpi
+sc.pp.neighbors(day1_adata)
+sc.tl.umap(day1_adata)
+day1_adata
+
+# 2dpi
+sc.pp.neighbors(day2_adata)
+sc.tl.umap(day2_adata)
+day2_adata
+
+# 3dpi
+sc.pp.neighbors(day3_adata)
+sc.tl.umap(day3_adata)
+day3_adata
+
+# Plotting the UMAP by disease codition, ACE2, and ENO2.
+# mock
+sc.pl.umap(
+    mock_adata,
+    color=["condition", "ACE2", "ENO2"],
+    size=8,
+)
+
+# 1dpi
+sc.pl.umap(
+    day1_adata,
+    color=["condition", "ACE2", "ENO2"],
+    size=8,
+)
+
+# 2dpi
+sc.pl.umap(
+    day2_adata,
+    color=["condition", "ACE2", "ENO2"],
+    size=8,
+)
+
+# 3dpi
+sc.pl.umap(
+    day3_adata,
+    color=["condition", "ACE2", "ENO2"],
+    size=8,
+)
+```
+ACE2 not a good marker for infection, probably.
+
+ENO2 absent in infection states. Absence of ENO2 probably indicates the prsence of infection.
 
 ### Nearest Neighbour
 The PCA representation of the data matrix was used to compute the neighborhood graph of cells, to cluster the PCA components.
