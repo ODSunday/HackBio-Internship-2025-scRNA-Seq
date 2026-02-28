@@ -522,101 +522,120 @@ ACE2 not a good marker for infection, probably.
 
 ENO2 absent in infection states. Absence of ENO2 probably indicates the prsence of infection.
 
-### Nearest Neighbour
-The PCA representation of the data matrix was used to compute the neighborhood graph of cells, to cluster the PCA components.
-```py
-sc.pp.neighbors(bone_marrow_adata)
-sc.tl.umap(bone_marrow_adata)
+## Clustering
 
+```py
+# mock
+sc.tl.leiden(mock_adata, flavor="igraph", n_iterations=2, key_added="leiden_res_", resolution=0.25)
+
+# 1dpi
+sc.tl.leiden(day1_adata, flavor="igraph", n_iterations=2, key_added="leiden_res_", resolution=0.25)
+
+# 2dpi
+sc.tl.leiden(day2_adata, flavor="igraph", n_iterations=2, key_added="leiden_res_", resolution=0.25)
+
+# 3dpi
+sc.tl.leiden(day3_adata, flavor="igraph", n_iterations=2, key_added="leiden_res_", resolution=0.25)
+
+# mock
 sc.pl.umap(
-    bone_marrow_adata,
-    color=["n_genes_by_counts"],
-    size=8,
+    mock_adata,
+    color=["leiden_res_"],
+    size=16,
+    title='mock'
 )
 
+# 1dpi
 sc.pl.umap(
-    bone_marrow_adata,
-    color=["total_counts"],
+    day1_adata,
+    color=["leiden_res_"],
+    size=16,
+    title='1dpi'
+)
+
+# 2dpi
+sc.pl.umap(
+    day2_adata,
+    color=["leiden_res_"],
+    size=16,
+    title='2dpi'
+)
+
+# 3dpi
+sc.pl.umap(
+    day3_adata,
+    color=["leiden_res_"],
+    size=16,
+    title='3dpi'
+)
+
+# mock
+sc.pl.umap(
+    mock_adata,
+    color=["leiden_res_", "ACE2", "ENO2"],
     size=8,
+    title='mock'
+)
+
+# 1dpi
+sc.pl.umap(
+    day1_adata,
+    color=["leiden_res_", "ACE2", "ENO2"],
+    size=8,
+    title='1dpi'
+)
+
+# 2dpi
+sc.pl.umap(
+    day2_adata,
+    color=["leiden_res_", "ACE2", "ENO2"],
+    size=8,
+    title='2dpi'
+)
+
+# 3dpi
+sc.pl.umap(
+    day3_adata,
+    color=["leiden_res_", "ACE2", "ENO2"],
+    size=8,
+    title='3dpi'
+)
+
+# mock
+sc.pl.umap(
+    mock_adata,
+    color=["leiden_res_", "TMPRSS4"],
+    size=8,
+    title='mock'
+)
+
+# 1dpi
+sc.pl.umap(
+    day1_adata,
+    color=["leiden_res_", "TMPRSS4"],
+    size=8,
+    title='1dpi'
+)
+
+# 2dpi
+sc.pl.umap(
+    day2_adata,
+    color=["leiden_res_", "TMPRSS4"],
+    size=8,
+    title='2dpi'
+)
+
+# 3dpi
+sc.pl.umap(
+    day3_adata,
+    color=["leiden_res_", "TMPRSS4"],
+    size=8,
+    title='3dpi'
 )
 ```
 
-## Clustering by communities.
-Grouping of cells that show similar expression profiles, for cell type detection.
-```py
-# Using the igraph implementation and a fixed number of iterations.
-sc.tl.leiden(bone_marrow_adata, flavor="igraph", n_iterations=2)
 
-sc.pl.umap(
-    bone_marrow_adata,
-    color=["leiden"],
-    size=8,
-)
 
-# Playing around sizing and spacing
-sc.pl.umap(
-    bone_marrow_adata,
-    color=["leiden"],
-    # increase horizontal space between panels
-    wspace=0.5,
-    size=3,
-    ncols = 1
-)
-
-# Checking for doublets
-sc.pl.umap(
-    bone_marrow_adata,
-    color=[ "predicted_doublet"],
-    # increase horizontal space between panels
-    wspace=0.5,
-    size=3,
-    ncols = 1
-)
-
-sc.pl.umap(
-    bone_marrow_adata,
-    color=[ "doublet_score"],
-    # increase horizontal space between panels
-    wspace=0.5,
-    size=3,
-    ncols = 1
-)
-
-# Further reclustering
-sc.tl.leiden(bone_marrow_adata, flavor="igraph", n_iterations=2, key_added="leiden_res0_02", resolution=0.02)
-sc.tl.leiden(bone_marrow_adata, flavor="igraph", n_iterations=2, key_added="leiden_res0_5", resolution=0.5)
-sc.tl.leiden(bone_marrow_adata, flavor="igraph", n_iterations=2, key_added="leiden_res2", resolution=2)
-
-sc.pl.umap(
-    bone_marrow_adata,
-    color=["leiden_res0_02"],
-    # increase horizontal space between panels
-    wspace=0.5,
-    size=15,
-    ncols = 1
-)
-
-sc.pl.umap(
-    bone_marrow_adata,
-    color=["leiden_res0_5"],
-    # increase horizontal space between panels
-    wspace=0.5,
-    size=15,
-    ncols = 1,
-    legend_loc="on data"
-)
-
-sc.pl.umap(
-    bone_marrow_adata,
-    color=["leiden_res2"],
-    # increase horizontal space between panels
-    wspace=0.5,
-    size=15,
-    ncols = 1,
-    legend_loc="on data"
-)
-```
-Leiden resolution of `0.5` produced relatively sizeable clusters. So, this resolution was used in the downstream analyses.
 
 ## Cell Type Annotation
 Assigning biological meaning (e.g., cell type or functional state) to each cluster found after Leiden clustering, using **Decoupler**.
