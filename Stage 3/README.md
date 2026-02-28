@@ -638,38 +638,27 @@ sc.pl.umap(
 )
 ```
 
-
-
-
 ## Cell Type Annotation
 Assigning biological meaning (e.g., cell type or functional state) to each cluster found after Leiden clustering, using **Decoupler**.
 
-**Data correction**:
-
-The dataset was obtained from CZI (Chan Zuckerberg Institute), and uses ensemble gene ids, contrary to what decoupler expects.
-
-To fix this includes running the following codes before importing decoupler:
-```py
-!wget wget -O result.txt 'http://www.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "CSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
-
-# This downloads the table of genes directly from ensemble
-```
-
-```py
-import pandas as pd
-
-ensembl_var = pd.read_csv('/content/result.txt', header = None)
-ensembl_var.columns = ['ensembl_gene_id', 'gene_name']
-ensembl_var.head(3)
-```
 ```py
 import decoupler as dc
+
+# Subset to specific organ to get relevant cell types.
 
 # Query Omnipath and get PanglaoDB
 markers = dc.op.resource(name="PanglaoDB", organism="human")
 
+# Inspect 'markers'
+markers.shape
+markers.head()
+
+# Select a specific organ
+markers['organ'].unique()
+
 # Keep canonical cell type markers alone
-#markers = markers[markers["canonical_marker"]]
+markers = markers[markers["organ"] == "Lungs"]
+markers.shape
 
 # Remove duplicated entries
 markers = markers[~markers.duplicated(["cell_type", "genesymbol"])]
@@ -679,39 +668,47 @@ markers = markers.rename(columns={"cell_type": "source", "genesymbol": "target"}
 markers = markers[["source", "target"]]
 
 markers.head()
-```
-```py
-# Correct target to ensemble
-markers = markers.merge(ensembl_var, left_on="target", right_on="gene_name", how="left")
-markers = markers.drop(columns=["target"])
 
-# Remove duplicated entries
-markers = markers[~markers.duplicated(["source", "ensembl_gene_id"])]
+mock_adata.var_names
+day1_adata.var_names
+day2_adata.var_names
+day3_adata.var_names
 
-# Format because dc only accepts cell_type and genesymbol
-markers = markers.rename(columns={"source": "source", "ensembl_gene_id": "target"})
-
-markers = markers[["source", "target"]]
-markers = markers.dropna()
-
-markers.head()
-```
-```py
 # Load the gene expression matrix into dc
-dc.mt.ulm(data=bone_marrow_adata,
+dc.mt.ulm(data=mock_adata,
+          net=markers,
+          tmin = 3)
+
+dc.mt.ulm(data=day1_adata,
+          net=markers,
+          tmin = 3)
+
+dc.mt.ulm(data=day2_adata,
+          net=markers,
+          tmin = 3)
+
+dc.mt.ulm(data=day3_adata,
           net=markers,
           tmin = 3)
 
 # Retrieve the score for each cell type
-score = dc.pp.get_obsm(bone_marrow_adata, key="score_ulm")
-score
+score_mock = dc.pp.get_obsm(mock_adata, key="score_ulm")
+score_1 = dc.pp.get_obsm(day1_adata, key="score_ulm")
+score_2 = dc.pp.get_obsm(day2_adata, key="score_ulm")
+score_3 = dc.pp.get_obsm(day3_adata, key="score_ulm")
 
 # Preview the data
-bone_marrow_adata.obsm["score_ulm"].head()
-bone_marrow_adata.obsm["score_ulm"].columns
+mock_adata.obsm["score_ulm"].head(3)
+day1_adata.obsm["score_ulm"].head(3)
+day2_adata.obsm["score_ulm"].head(3)
+day3_adata.obsm["score_ulm"].head(3)
 
-sc.pl.umap(score, color=["B cells memory", "leiden_res0_5"], cmap="RdBu_r")
+mock_adata.obsm["score_ulm"].columns
+day1_adata.obsm["score_ulm"].columns
+day2_adata.obsm["score_ulm"].columns
+day3_adata.obsm["score_ulm"].columns
 ```
+-------------------------
 ```py
 import seaborn as sns
 
