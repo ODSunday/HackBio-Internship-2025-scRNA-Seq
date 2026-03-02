@@ -850,7 +850,8 @@ sc.pl.paga_compare(day2_adata, threshold=0.03, frameon=True, edges=True, size = 
 sc.pl.paga_compare(day3_adata, threshold=0.03, frameon=True, edges=True, size = 16, title='3dpi')
 ```
 
-Now how do cells transition from one type to another, assuming we have a pluripotent progenitor cell.
+## Pseudotime Analysis
+How do cells transition from one type to another, assuming we have a pluripotent progenitor cell?
 
 ```py
 mock_adata.uns['iroot'] = np.flatnonzero(mock_adata.obs['leiden_res_']  == 'Pluripotent stem cells')[0]
