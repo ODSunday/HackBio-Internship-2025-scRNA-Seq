@@ -882,6 +882,35 @@ day3_adata.write("day3_adata.h5", compression="gzip")
 ```
 ## Biological Interpretation: Questions and Answers
 ### Q1. What cell types did you identify at the different stages of infection?
+Mock
+('0', 0): 'Ciliated cells'
+('1', 15): 'Alveolar macrophages'
+('2', 16): 'Ionocytes'
+('3', 29): 'Ionocytes'
+
+day_1
+('0', 0): 'Ciliated cells'
+('1', 13): 'Pulmonary alveolar type I cells'
+('2', 16): 'Ionocytes'
+('3', 24): 'Ciliated cells'
+('4', 36): 'Ionocytes'
+
+day_2
+('0', 0): 'Airway goblet cells'
+('1', 8): 'Ciliated cells'
+('2', 21): 'Airway epithelial cells'
+('3', 25): 'Ionocytes'
+('4', 32): 'Ciliated cells'
+('5', 40): 'Ionocytes'
+('6', 50): 'Ciliated cells'
+('7', 63): 'Alveolar macrophages'
+
+day_3
+('0', 0): 'Ciliated cells'
+('1', 15): 'Alveolar macrophages'
+('2', 16): 'Clara cells'
+('4', 37): 'Alveolar macrophages'
+('5', 46): 'Airway goblet cells'
 
 ### Q2. Can you explain why these cell types correlate with COVID-19 infection?
 
