@@ -708,78 +708,177 @@ day1_adata.obsm["score_ulm"].columns
 day2_adata.obsm["score_ulm"].columns
 day3_adata.obsm["score_ulm"].columns
 ```
--------------------------
+
+### Rank genes
+
 ```py
-import seaborn as sns
+# mock
+mock_adata_gene_rank = dc.tl.rankby_group(score_mock, groupby="leiden_res_", reference="rest", method="t-test_overestim_var")
+mock_adata_gene_rank = mock_adata_gene_rank[mock_adata_gene_rank["stat"] > 0]
+mock_adata_gene_rank.head(5)
 
-sc.pl.violin(score, keys=["B cells memory"], groupby="leiden_res0_5", rotation=90)
-```
-Identifying what each of the 9 clusters mean:
-```py
-# Rank genes
-bone_marrow_adata_rank = dc.tl.rankby_group(score, groupby="leiden_res0_5", reference="rest", method="t-test_overestim_var")
-bone_marrow_adata_rank = bone_marrow_adata_rank[bone_marrow_adata_rank["stat"] > 0]
-bone_marrow_adata_rank.head()
+# 1dpi
+day1_adata_gene_rank = dc.tl.rankby_group(score_1, groupby="leiden_res_", reference="rest", method="t-test_overestim_var")
+day1_adata_gene_rank = day1_adata_gene_rank[day1_adata_gene_rank["stat"] > 0]
+day1_adata_gene_rank.head(5)
 
-cluster_annotations = bone_marrow_adata_rank[bone_marrow_adata_rank["stat"] > 0].groupby("group").head(1).set_index("group")["name"].to_dict()
+# 2dpi
+day2_adata_gene_rank = dc.tl.rankby_group(score_2, groupby="leiden_res_", reference="rest", method="t-test_overestim_var")
+day2_adata_gene_rank = day2_adata_gene_rank[day2_adata_gene_rank["stat"] > 0]
+day2_adata_gene_rank.head(5)
 
-cluster_annotations
-
-bone_marrow_adata.obs['cell_type'] = bone_marrow_adata.obs['leiden_res0_5'].map(cluster_annotations)
-
-# Subsetting for multiple genes in the 'source' column
-available_genes = set(bone_marrow_adata.var_names)
-
-b_cell_markers = markers[markers['source'].isin(['B cells memory'])]['target']
-b_cell_markers = b_cell_markers[b_cell_markers.isin(available_genes)]
-
-nk_cell_markers = markers[markers['source'].isin(['Natural killer T cells'])]['target']
-nk_cell_markers = nk_cell_markers[nk_cell_markers.isin(available_genes)]
-
-t_cells_markers = markers[markers['source'].isin(['T cells'])]['target']
-t_cells_markers = t_cells_markers[t_cells_markers.isin(available_genes)]
-
-display(b_cell_markers)
-display(nk_cell_markers)
-display(t_cells_markers)
+# 3dpi
+day3_adata_gene_rank = dc.tl.rankby_group(score_3, groupby="leiden_res_", reference="rest", method="t-test_overestim_var")
+day3_adata_gene_rank = day3_adata_gene_rank[day3_adata_gene_rank["stat"] > 0]
+day3_adata_gene_rank.head(5)
 ```
 
-## Visualising cell types in other ways
+### Identify cell types
+
 ```py
-marker_genes_dict = {
-    "B cells": b_cell_markers.head().tolist(),
-    "NK cells": nk_cell_markers.head().tolist(),
-    "T cells": t_cells_markers.head().tolist()
-}
+# mock
+top_cell_type_per_group_mock = mock_adata_gene_rank.groupby('group')['name'].apply(lambda x: x.head(1))
+display(top_cell_type_per_group.to_dict())
 
-# Dotplot
-sc.pl.dotplot(bone_marrow_adata, marker_genes_dict, "cell_type", dendrogram=True)
+# 1dpi
+top_cell_type_per_group_1 = day1_adata_gene_rank.groupby('group')['name'].apply(lambda x: x.head(1))
+display(top_cell_type_per_group.to_dict())
 
-# Stacked violin plot
-sc.pl.stacked_violin(
-    bone_marrow_adata, marker_genes_dict, groupby="leiden_res0_5",  dendrogram=True
+# 2dpi
+top_cell_type_per_group_2 = day2_adata_gene_rank.groupby('group')['name'].apply(lambda x: x.head(1))
+display(top_cell_type_per_group.to_dict())
+
+# 3dpi
+top_cell_type_per_group_3 = day3_adata_gene_rank.groupby('group')['name'].apply(lambda x: x.head(1))
+display(top_cell_type_per_group.to_dict())
+
+sc.pl.umap(score_mock, color=["Ciliated cells","leiden_res_"], cmap="coolwarm")
+sc.pl.umap(score_1, color=["Ciliated cells","leiden_res_"], cmap="coolwarm")
+sc.pl.umap(score_2, color=["Ciliated cells","leiden_res_"], cmap="coolwarm")
+sc.pl.umap(score_3, color=["Ciliated cells","leiden_res_"], cmap="coolwarm")    # Use "Clara cells" instead, since it appears at 3dpi
+
+dict_ann_mock = mock_adata_gene_rank[mock_adata_gene_rank["stat"] > 0].groupby("group").head(1).set_index("group")["name"].to_dict()
+dict_ann_mock
+
+dict_ann_1 = day1_adata_gene_rank[day1_adata_gene_rank["stat"] > 0].groupby("group").head(1).set_index("group")["name"].to_dict()
+dict_ann_1
+
+dict_ann_2 = day2_adata_gene_rank[day2_adata_gene_rank["stat"] > 0].groupby("group").head(1).set_index("group")["name"].to_dict()
+dict_ann_2
+
+dict_ann_3 = day3_adata_gene_rank[day3_adata_gene_rank["stat"] > 0].groupby("group").head(1).set_index("group")["name"].to_dict()
+dict_ann_3
+
+mock_adata.obs["leiden_res_"] = mock_adata.obs["leiden_res_"].cat.rename_categories(dict_ann_mock)
+day1_adata.obs["leiden_res_"] = day1_adata.obs["leiden_res_"].cat.rename_categories(dict_ann_1)
+day2_adata.obs["leiden_res_"] = day2_adata.obs["leiden_res_"].cat.rename_categories(dict_ann_2)
+day3_adata.obs["leiden_res_"] = day3_adata.obs["leiden_res_"].cat.rename_categories(dict_ann_3)
+
+sc.pl.umap(
+    adata=mock_adata,
+    color=[ "leiden_res_"],
+    ncols=1,
+    title='mock'
 )
 
-# Matrix plot
-sc.pl.matrixplot(
-    bone_marrow_adata,
-    marker_genes_dict,
-    "leiden_res0_5",
-    dendrogram=True,
-    cmap="Blues",
+sc.pl.umap(
+    adata=day1_adata,
+    color=[ "leiden_res_"],
+    ncols=1,
+    title='1dpi'
 )
 
-# Heatmap
-sc.pl.heatmap(
-    bone_marrow_adata, marker_genes_dict, groupby="leiden_res0_5", cmap="viridis", dendrogram=True
+sc.pl.umap(
+    adata=day2_adata,
+    color=[ "leiden_res_"],
+    ncols=1,
+    title='2dpi'
 )
 
-# Using genome tracks
-sc.pl.tracksplot(bone_marrow_adata, marker_genes_dict, groupby="leiden_res0_5", dendrogram=False)
+sc.pl.umap(
+    adata=day3_adata,
+    color=[ "leiden_res_"],
+    ncols=1,
+    title='3dpi'
+)
 ```
 
+## Trajectory Inference
+It helps to understand how cells transition from one type to another, for example, stem cell to mature cell.
 
+First, build a graph (network) connecting cells that look alike, where each cell is a dot, and a line (edge) drawn between two similar cells.
+```py
+# Trajectory analysis
+sc.tl.draw_graph(mock_adata)
+sc.tl.draw_graph(day1_adata)
+sc.tl.draw_graph(day2_adata)
+sc.tl.draw_graph(day3_adata)
 
+plt.rcParams["figure.figsize"] = (4,4)
+sc.pl.draw_graph(mock_adata, color='leiden_res_', size = 16, title='mock')
+sc.pl.draw_graph(day1_adata, color='leiden_res_', size = 16, title='1dpi')
+sc.pl.draw_graph(day2_adata, color='leiden_res_', size = 16, title='2dpi')
+sc.pl.draw_graph(day3_adata, color='leiden_res_', size = 16, title='3dpi')
+```
+Next, ABSTRACT the graph, where all the points clustering for one cell type are converted to one point, Similar to a blunt summary of everypoint
+
+```py
+sc.tl.paga(mock_adata, groups='leiden_res_')
+sc.tl.paga(day1_adata, groups='leiden_res_')
+sc.tl.paga(day2_adata, groups='leiden_res_')
+sc.tl.paga(day3_adata, groups='leiden_res_')
+
+sc.pl.paga(mock_adata, color=['leiden_res_'], title='mock')
+sc.pl.paga(day1_adata, color=['leiden_res_'], title='1dpi')
+sc.pl.paga(day2_adata, color=['leiden_res_'], title='2dpi')
+sc.pl.paga(day3_adata, color=['leiden_res_'], title='3dpi')
+
+sc.tl.draw_graph(mock_adata, init_pos='paga')
+sc.tl.draw_graph(day1_adata, init_pos='paga')
+sc.tl.draw_graph(day2_adata, init_pos='paga')
+sc.tl.draw_graph(day3_adata, init_pos='paga')
+
+sc.pl.draw_graph(mock_adata, color='leiden_res_', legend_loc='on data', size=8, title='mock')
+sc.pl.draw_graph(day1_adata, color='leiden_res_', legend_loc='on data', size=8, title='1dpi')
+sc.pl.draw_graph(day2_adata, color='leiden_res_', legend_loc='on data', size=8, title='2dpi')
+sc.pl.draw_graph(day3_adata, color='leiden_res_', legend_loc='on data', size=8,title='3dpi')
+
+plt.rcParams["figure.figsize"] = (5,4)
+sc.pl.paga_compare(mock_adata, threshold=0.03, frameon=True, edges=True, size = 16, title='mock')
+sc.pl.paga_compare(day1_adata, threshold=0.03, frameon=True, edges=True, size = 16, title='1dpi')
+sc.pl.paga_compare(day2_adata, threshold=0.03, frameon=True, edges=True, size = 16, title='2dpi')
+sc.pl.paga_compare(day3_adata, threshold=0.03, frameon=True, edges=True, size = 16, title='3dpi')
+```
+
+Now how do cells transition from one type to another, assuming we have a pluripotent progenitor cell.
+
+```py
+mock_adata.uns['iroot'] = np.flatnonzero(mock_adata.obs['leiden_res_']  == 'Pluripotent stem cells')[0]
+sc.tl.dpt(mock_adata)
+
+day1_adata.uns['iroot'] = np.flatnonzero(day1_adata.obs['leiden_res_']  == 'Pluripotent stem cells')[0]
+sc.tl.dpt(day1_adata)
+
+day2_adata.uns['iroot'] = np.flatnonzero(day2_adata.obs['leiden_res_']  == 'Pluripotent stem cells')[0]
+sc.tl.dpt(day2_adata)
+
+day3_adata.uns['iroot'] = np.flatnonzero(day3_adata.obs['leiden_res_']  == 'Pluripotent stem cells')[0]
+sc.tl.dpt(day3_adata)
+
+sc.pl.draw_graph(mock_adata, color=['dpt_pseudotime', 'leiden_res_'], legend_loc='on data', size = 24, title='mock')
+sc.pl.draw_graph(day1_adata, color=['dpt_pseudotime', 'leiden_res_'], legend_loc='on data', size = 24, title='1dpi')
+sc.pl.draw_graph(day2_adata, color=['dpt_pseudotime', 'leiden_res_'], legend_loc='on data', size = 24, title='2dpi')
+sc.pl.draw_graph(day3_adata, color=['dpt_pseudotime', 'leiden_res_'], legend_loc='on data', size = 24, title='3dpi')
+```
+
+Saving the datasets
+
+```py
+mock_adata.write("mock_adata.h5", compression="gzip")
+day1_adata.write("day1_adata.h5", compression="gzip")
+day2_adata.write("day2_adata.h5", compression="gzip")
+day3_adata.write("day3_adata.h5", compression="gzip")
+```
 ## Biological Interpretation: Questions and Answers
 ### Q1. What cell types did you identify at the different stages of infection?
 
