@@ -882,62 +882,25 @@ day3_adata.write("day3_adata.h5", compression="gzip")
 ```
 ## Biological Interpretation: Questions and Answers
 ### Q1. What cell types did you identify at the different stages of infection?
-Mock
+*Mock*
 
-('0', 0): 'Ciliated cells'
+Ciliated cells, Alveolar macrophages, and Ionocytes.
 
-('1', 15): 'Alveolar macrophages'
+*day_1*
 
-('2', 16): 'Ionocytes'
+Ciliated cells, Pulmonary alveolar type I cells, Ionocytes, and Ciliated cells.
 
-('3', 29): 'Ionocytes'
+*day_2*
 
+Airway goblet cells, Ciliated cells, Airway epithelial cells, Ionocytes, and Alveolar macrophages.
 
-day_1
+*day_3*
 
-('0', 0): 'Ciliated cells'
-
-('1', 13): 'Pulmonary alveolar type I cells'
-
-('2', 16): 'Ionocytes'
-
-('3', 24): 'Ciliated cells'
-
-('4', 36): 'Ionocytes'
-
-
-day_2
-
-('0', 0): 'Airway goblet cells'
-
-('1', 8): 'Ciliated cells'
-
-('2', 21): 'Airway epithelial cells'
-
-('3', 25): 'Ionocytes'
-
-('4', 32): 'Ciliated cells'
-
-('5', 40): 'Ionocytes'
-
-('6', 50): 'Ciliated cells'
-
-('7', 63): 'Alveolar macrophages'
-
-
-day_3
-
-('0', 0): 'Ciliated cells'
-
-('1', 15): 'Alveolar macrophages'
-
-('2', 16): 'Clara cells'
-
-('4', 37): 'Alveolar macrophages'
-
-('5', 46): 'Airway goblet cells'
+Ciliated cells, Alveolar macrophages, Clara cells, Alveolar macrophages, and Airway goblet cells.
 
 ### Q2. Can you explain why these cell types correlate with COVID-19 infection?
+
+The various cell types in the respiratory tract perform specific roles during COVID-19 infection. The upper respiratory tract, for instance, houses the **ciliated and goblet cells** which are readily infected as they co-express ACE2 and TMPRSS2 which are important viral entry factors[2][3]. Ciliated cells infected with SARS-CoV-2 shed virion-filled cells and trigger IL-6 cytokine/CXCL chemokine release[2][4], while mucus-secreting goblet cells harbour high ACE2/TMPRSS2 and produce inflammatory signals[4][6]. **Clara (Club) cells** also express entry receptors[7], become infected, and secrete cytokines IL-6 or chemokine CXCL[4]. However, their altered interactions with immune cells in COVID-19 have been reported[8]. **Basal airway stem cells** (not seen in the identified clusters) show low ACE2 (about 1% by scRNA)[9] but after infection acquire a pro-inflammatory, STAT3-driven epigenetic memory that impairs regeneration[10]. **Ionocytes** (a rare CFTR^+ airway cell) have no reported data on SARS-CoV-2, likely due to their scarcity. In the alveoli, **alveolar type I (AT1) cells** normally lack ACE2 and are rarely directly infected, yet they suffer massive loss and barrier disruption in severe COVID[11]. Their damage is marked by elevated soluble RAGE levels in patients[12]. **Alveolar macrophages** do not express ACE2[13] but are strongly activated by infection. They proliferate into lipid-laden foam cells with pro-fibrotic transcriptional programmes[14], release IL-6 and other cytokines (driving ARDS), and correlate with severe outcomes such as serum sCD163, sCD14[15].
 
 ### Q3. Is ACE2 a good marker for tracking COVID-19 infection rate (based on this dataset)?
 
@@ -946,5 +909,5 @@ day_3
 ### Q5. Which cell cluster has the highest abundance of ACE2 expression after 3 dpi and what does that mean biologically (INTERPRET VISUALLY)?
 
 ## REFERENCES
-Ravindra, N.G., Alfajaro, m.M., Gasque, V., Huston, N.C., Wan, H., Szigeti-Buck, K., Yasumoto, Y., Greaney, A.M., Habet, V., Chow, R.D., Chen, J.S., Wei, J., Filler, R.B., Wang, B., Wang, G., Niklason, L.E., Montgomery, R.R., Eisenbarth, S.C., Chen, S., Williams, A., Iwasaki, A., Horvath, T.L., Foxman, E.F., Pierce, R.W., Pyle, A.M., van Dijk, D., Wilen, C.B. (2021). Single-cell longitudinal analysis of SARS-CoV-2 infection in human airway epithelium identifies target cells, alterations in gene expression, and cell state changes. _PLoS Biol_ 19(3): e3001143. https://doi.org/10.1371/journal.pbio.3001143.
+1. Ravindra, N.G., Alfajaro, m.M., Gasque, V., Huston, N.C., Wan, H., Szigeti-Buck, K., Yasumoto, Y., Greaney, A.M., Habet, V., Chow, R.D., Chen, J.S., Wei, J., Filler, R.B., Wang, B., Wang, G., Niklason, L.E., Montgomery, R.R., Eisenbarth, S.C., Chen, S., Williams, A., Iwasaki, A., Horvath, T.L., Foxman, E.F., Pierce, R.W., Pyle, A.M., van Dijk, D., Wilen, C.B. (2021). Single-cell longitudinal analysis of SARS-CoV-2 infection in human airway epithelium identifies target cells, alterations in gene expression, and cell state changes. _PLoS Biol_ 19(3): e3001143. https://doi.org/10.1371/journal.pbio.3001143.
 
